@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ * Copyright (c) 2008-2009 Olle Törnström studiomediatech.com
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * @author Olle Törnström olle@studiomediatech.com
+ * @since 1.0
+ * @created 2009-01-30
+-->
+<project name="jsinject" default="build" basedir=".">
+
+	<description>
+		Tests and builds the project artifacts.
+		Builds to: ${build.dir}
+	</description>
+
+	<property name="build.dir" value="${basedir}/output" />
+	<property name="lib.dir" value="${basedir}/lib" />
+	<property name="src.dir" value="${basedir}/src" />
+
+	<macrodef name="jstest">
+		<attribute name="config" />
+		<sequential>
+			<java classname="org.mozilla.javascript.tools.shell.Main"
+			      classpath="${lib.dir}/java/rhino1_7R1/js.jar"
+			      fork="true"
+			      output="test-output.txt">
+				<arg value="${lib.dir}/sh/jstest.sh" />
+				<arg value="@{config}" />
+			</java>
+			<loadfile property="testresults" srcFile="test-output.txt" />
+			<delete file="test-output.txt" />
+			<fail message="Test failed: ${testresults}">
+				<condition>
+					<matches pattern="FAILURE" string="${testresults}" />
+				</condition>
+			</fail>
+			<echo>${testresults}</echo>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="jslint">
+		<attribute name="files" />
+		<sequential>
+			<java classname="org.mozilla.javascript.tools.shell.Main"
+			      classpath="${lib.dir}/java/rhino1_7R1/js.jar"
+			      fork="true"
+			      output="lint-output.txt">
+				<arg value="${lib.dir}/sh/jslint.sh" />
+				<arg value="@{files}" />
+			</java>
+			<loadfile property="lintresults" srcFile="lint-output.txt" />
+			<delete file="lint-output.txt" />
+			<fail message="Lint failed: ${lintresults}">
+				<condition>
+					<matches pattern="Lint at" string="${lintresults}" />
+				</condition>
+			</fail>
+			<echo>${lintresults}</echo>
+		</sequential>
+	</macrodef>
+
+	<target name="test" description="Runs the project unit tests">
+		<jslint files="${src.dir}/main/js/jsinject.js" />
+		<jstest config="${src.dir}/test/resources/jstests" />
+	</target>
+
+	<target name="build" depends="test" description="Builds the PHP artifacts">
+		<mkdir dir="${build.dir}" />
+		<taskdef name="jsmin"
+		         classname="net.matthaynes.jsmin.JSMin_Task"
+		         classpath="${lib.dir}/java/jsmin/jsmin.0.2.3.jar" />
+		<jsmin srcfile="${src.dir}/main/js/jsinject.js"
+		       suffix="true"
+		       destdir="${build.dir}" />
+		<copy todir="${build.dir}" file="${src.dir}/main/js/jsinject.js" />
+	</target>
+
+	<target name="clean" description="Cleans and removes all built artifacts">
+		<delete dir="${build.dir}" />
+	</target>
+
+</project>
