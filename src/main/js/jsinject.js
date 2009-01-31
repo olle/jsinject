@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008-2009 Olle Törnström studiomediatech.com
+ * Copyright (c) 2008-2009 Olle TÃ¶rnstrÃ¶m studiomediatech.com
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,8 +30,8 @@
  * var foo = JSInject.getBean('foo');
  * var bar = JSInject.getBean('bar');
  * 
- * @author Olle Törnström olle[at]studiomediatech[dot]com
- * @created 2008-11-17
+ * @author Olle TÃ¶rnstrÃ¶m olle[at]studiomediatech[dot]com
+ * @created 2009-01-30
  * @version 1.0
  */
 var JSInject = {};
