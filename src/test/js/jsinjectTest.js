@@ -52,6 +52,14 @@ JSInjectTest.setUp = function () {
 			props : {
 				'myBar' : {ref : 'bar'}
 			}
+		},
+		wiredBar : {
+			type : Bar,
+			args : ['WiredBar'],
+			props : {
+				'myFoo' : {type : Foo, args : ['InnerFoo']},
+				'myBar' : {ref : 'bar'}
+			}
 		}
 	});
 };
@@ -74,6 +82,10 @@ JSInjectTest.testGetNamedBean = function () {
 
 JSInjectTest.testGetWiredProperty = function () {
 	assertEquals('Bar', JSInject.getBean('wiredFoo').myBar.getName());
+};
+
+JSInjectTest.testGetInnerBeanProperty = function () {
+	assertEquals('InnerFoo', JSInject.getBean('wiredBar').myFoo.getName());
 };
 
 TestCase.JSInjectTest = JSInjectTest;

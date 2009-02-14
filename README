@@ -1,0 +1,98 @@
+ * Copyright (c) 2008-2009 Olle Törnström studiomediatech.com
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * @author  Olle Törnström olle@studiomediatech.com
+ * @created 2009-02-13
+ * @file    README JSInject
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+ INTRODUCTION
+ 
+ JSInject is a dependency injection library and an IoC (Inversion of Control) 
+ container for JavaScript. It has no dependencies to other JavaScript libraries
+ or frameworks.
+ 
+ Features:
+ 
+  - Application context (IoC container)
+  - Bean wiring factory
+  - Constructor arguments
+  - Support for bean properties
+  - Referenced bean properties
+  - Inner (anonymous) bean properties
+  - Supports bean scopes
+  - Singleton bean scope (default)
+  - Prototype bean scope
+
+ QUICK GUIDE
+
+ Usage:
+ 
+  - Beans are wired from a JSON bean configuration.
+ 
+  JSInject.wireBeans({
+     foo : {
+     	type : FooClass, 
+     	args : ['arg1', 'arg2'],
+     	props : {
+     		'myBar' : {ref : 'bar'}
+     	}
+     },
+     bar : {
+     	type : BarClass, 
+     	props : {
+     		'myBaz' : {type : BazClass}
+     	}
+     }
+  });
+  
+  - And refered to in the application context by unique name.
+  
+  var foo = JSInject.getBean('foo');
+  var bar = JSInject.getBean('bar');
+
+  - More information can be found in the project documentation.
+ 
+ DEVELOPER INFORMATION
+ 
+ _ _ Using Ant _ _
+ 
+ JSInject uses Ant and distributed binary dependencies to aid simple development
+ and extension if anyone would like so. Ant 1.7.x is preferred, and tested, but
+ earlier versions such as 1.6.x might work as well.
+ 
+ To see available targets please use:
+ 
+ 	ant -p
+ 
+ _ _ Requirements _ _ 
+ 
+ Other requirements should at the moment only be a well functioning and running
+ Java 1.5 environment.
+ 
+ _ _ Testing _ _
+ 	
+ Testing is an important part of further development and to ensure that JSInject
+ works as expected. Please find time to enhance and further develop the unit
+ tests for JSUnit.
+ 
+ Tests are currently in:
+ 
+ 	./src/test/js/jsinjectTest.js

@@ -77,12 +77,41 @@
 		</sequential>
 	</macrodef>
 
+	<macrodef name="jsdoc">
+		<attribute name="file" />
+		<attribute name="todir" />
+		<sequential>
+			<java jar="${lib.dir}/js/jsdoc-toolkit/jsrun.jar"
+			      dir="${lib.dir}/js/jsdoc-toolkit"
+			      fork="true">
+				<arg value="${lib.dir}/js/jsdoc-toolkit/app/run.js" />
+				<arg value="@{file}" />
+				<arg value="-a" />
+				<arg value="-p" />
+				<arg value="-e=utf-8" />
+				<arg value="-t=templates/jsinject" />
+				<arg value="-d=@{todir}" />
+			</java>
+		</sequential>
+	</macrodef>
+
 	<target name="test" description="Runs the project unit tests">
 		<jslint files="${src.dir}/main/js/jsinject.js" />
 		<jstest config="${src.dir}/test/resources/jstests" />
 	</target>
 
-	<target name="build" depends="test" description="Builds the PHP artifacts">
+	<target name="doc" description="Generates the JSDoc documentation">
+		<jsdoc file="${src.dir}/main/js/jsinject.js"
+		       todir="${build.dir}/jsdoc" />
+		<mkdir dir="${build.dir}/doc" />
+		<copy file="${build.dir}/jsdoc/symbols/_global_.html"
+		      tofile="${build.dir}/doc/index.html" />
+		<delete dir="${build.dir}/jsdoc" />
+	</target>
+
+	<target name="build"
+	        depends="test,doc"
+	        description="Builds the PHP artifacts">
 		<mkdir dir="${build.dir}" />
 		<taskdef name="jsmin"
 		         classname="net.matthaynes.jsmin.JSMin_Task"
