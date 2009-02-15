@@ -63,7 +63,7 @@
      }
   });
   
-  - And refered to in the application context by unique name.
+  - And referred to in the application context by unique name.
   
   var foo = JSInject.getBean('foo');
   var bar = JSInject.getBean('bar');
