@@ -81,15 +81,15 @@
 		<attribute name="file" />
 		<attribute name="todir" />
 		<sequential>
-			<java jar="${lib.dir}/js/jsdoc-toolkit/jsrun.jar"
-			      dir="${lib.dir}/js/jsdoc-toolkit"
+			<java jar="${lib.dir}/java/jsdoc-toolkit/jsrun.jar"
+			      dir="${lib.dir}/java/jsdoc-toolkit"
 			      fork="true">
-				<arg value="${lib.dir}/js/jsdoc-toolkit/app/run.js" />
+				<arg value="${lib.dir}/java/jsdoc-toolkit/app/run.js" />
 				<arg value="@{file}" />
 				<arg value="-a" />
 				<arg value="-p" />
 				<arg value="-e=utf-8" />
-				<arg value="-t=templates/jsinject" />
+				<arg value="-t=templates/jsdoc" />
 				<arg value="-d=@{todir}" />
 			</java>
 		</sequential>
