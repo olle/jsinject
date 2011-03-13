@@ -35,6 +35,12 @@ var Bar = function (name) {
 Bar.prototype.getName = function () {
 	return this.name;
 };
+var Baz = function (name) {
+	this.name = name || 'Baz';
+};
+Baz.prototype.getName = function () {
+	return this.name;
+};
 
 // TESTS
 
@@ -44,6 +50,7 @@ JSInjectTest.setUp = function () {
 	JSInject.wireBeans({
 		foo : {type : Foo},
 		bar : {type : Bar},
+		baz : {type: Baz, scope: "prototype"},
 		namedFoo : {type : Foo, args : ['NamedFoo']},
 		namedBar : {type : Bar, args : ['NamedBar']},
 		wiredFoo : {
@@ -58,7 +65,8 @@ JSInjectTest.setUp = function () {
 			args : ['WiredBar'],
 			props : {
 				'myFoo' : {type : Foo, args : ['InnerFoo']},
-				'myBar' : {ref : 'bar'}
+				'myBar' : {ref : 'bar'},
+				'myBaz' : {ref : 'baz'}
 			}
 		}
 	});
@@ -70,7 +78,7 @@ JSInjectTest.testGetBean = function () {
 };
 
 JSInjectTest.testGetUndefinedBean = function () {
-	assertEquals(undefined, JSInject.getBean("baz"));
+	assertEquals(undefined, JSInject.getBean("barbaz"));
 };
 
 JSInjectTest.testGetNamedBean = function () {
@@ -86,6 +94,10 @@ JSInjectTest.testGetWiredProperty = function () {
 
 JSInjectTest.testGetInnerBeanProperty = function () {
 	assertEquals('InnerFoo', JSInject.getBean('wiredBar').myFoo.getName());
+};
+
+JSInjectTest.testGetWiredBeanWithPrototypeScope = function () {
+	assertEquals('Baz', JSInject.getBean('wiredBar').myBaz.getName());
 };
 
 TestCase.JSInjectTest = JSInjectTest;

@@ -52,7 +52,7 @@ var JSInject = {};
 		for (var p in this.props || {}) {
 			var def = this.props[p];
 			if (typeof def.ref !== "undefined") {
-				instance[p] = context.instances[def.ref];
+				instance[p] = context.instances[def.ref] || context.getBean(def.ref);
 			} else {
 				if (typeof def.type !== "undefined") {
 					def.scope = "prototype";
