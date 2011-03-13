@@ -36,6 +36,7 @@
  *</pre>
  * 
  * @author Olle Törnström olle[at]studiomediatech[dot]com
+ * @contributor ArtemM https://github.com/ArtemM
  * @created 2009-01-30
  * @version 1.0
  */
